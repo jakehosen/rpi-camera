@@ -3,129 +3,36 @@
 This document provides step-by-step instructions for setting up a Python script that automatically takes photos using a Raspberry Pi NoIR camera every 15 minutes and starts on boot.
 
 ## Connecting your device
-Plug in your device and it will automatically connect to the **eiot**
-
-## Python Script (timelapse.py)
-
-Create the Python script that will control the camera:
-
-```python
-#!/usr/bin/env python3
-# timelapse.py - Takes photos every 15 minutes using libcamera
-
-import os
-import time
-import datetime
-import subprocess
-from pathlib import Path
-
-# Configuration
-INTERVAL = 15 * 60  # 15 minutes in seconds
-SAVE_DIRECTORY = "/home/pi/timelapse"
-IMAGE_PREFIX = "timelapse_"
-
-def setup():
-    """Create the save directory if it doesn't exist."""
-    Path(SAVE_DIRECTORY).mkdir(parents=True, exist_ok=True)
-    print(f"Images will be saved to: {SAVE_DIRECTORY}")
-
-def take_photo():
-    """Take a photo using libcamera-still and save it with timestamp."""
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"{IMAGE_PREFIX}{timestamp}.jpg"
-    filepath = os.path.join(SAVE_DIRECTORY, filename)
-    
-    try:
-        # Using libcamera-still command
-        command = [
-            "libcamera-still",
-            "-o", filepath,
-            "--nopreview",
-            "--timeout", "1000"  # 1 second timeout
-        ]
-        
-        # Execute the command
-        subprocess.run(command, check=True)
-        print(f"Photo taken: {filename}")
-        return True
-    except subprocess.CalledProcessError as e:
-        print(f"Error taking photo: {e}")
-        return False
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-        return False
-
-def main():
-    """Main function to run the timelapse."""
-    setup()
-    print("Starting timelapse capture...")
-    
-    try:
-        while True:
-            # Take photo
-            success = take_photo()
-            
-            # Wait for the next interval
-            print(f"Waiting {INTERVAL} seconds until next capture...")
-            time.sleep(INTERVAL)
-    except KeyboardInterrupt:
-        print("Timelapse capture stopped by user.")
-    except Exception as e:
-        print(f"Error in main loop: {e}")
-
-if __name__ == "__main__":
-    main()
-```
-
-## Systemd Service (timelapse.service)
-
-Create a systemd service to run the script at boot:
-
-```ini
-[Unit]
-Description=Raspberry Pi NoIR Camera Timelapse
-After=network.target
-
-[Service]
-ExecStart=/usr/bin/python3 /home/pi/timelapse.py
-WorkingDirectory=/home/pi
-StandardOutput=append:/home/pi/timelapse.log
-StandardError=append:/home/pi/timelapse.log
-Restart=always
-User=pi
-
-[Install]
-WantedBy=multi-user.target
-```
+* Plug in your device and it will automatically connect to the **eiot** wifi network.
+* Connect to your device. Type the following into the terminal ```ssh student@iotcamXX``` (replace XX with your device ID). Ask the prof for passwords.
+* Once you've confirmed that your device is up and running we can start getting things setup. Keep the ssh session open, we'll use it in a minute.
 
 ## Installation Steps
 
 ### Step 1: Create the Python script
-1. Plug-in a USB drive with the files you need and open a terminal on your Raspberry Pi
-2. Create the Python script file called timelapse.py and copy it to /home/pi as follows:
+1. Download the timelapse.py file and use the networking protocol **scp** to transmit the data.
+2. Open a new Windows Powershell or other terminal window.
+3. Make sure you are navigated to the directory on your computer with timelapse.py. Then type the following (again remember to replace XX with your device id):
    ```bash
-   sudo cp timelapse.py /home/pi/
+   sudo scp timelapse.py student@iotcamXX:/home/pi/
    ```
-3. Copy and paste the Python script from above
-4. Save and exit (Ctrl+X, then Y, then Enter)
-5. Make the script executable:
+5. Go to your ssh window and enter the following:
    ```bash
    sudo chmod +x /home/pi/timelapse.py
    ```
 
 ### Step 2: Create the systemd service
-1. Create a systemd service file. Copy the file contents above into a file called timelapse.service and copy ito into /etc/systemd/system/ as follows:
+1. Transfer the systemd service file into /etc/systemd/system/ as follows:
    ```bash
-   sudo cp timelapse.service /etc/systemd/system/
+   sudo scp timelapse.service student@iotcamXX:/etc/systemd/system/
    ```
-2. Copy and paste the service configuration from above
-3. Save and exit (Ctrl+X, then Y, then Enter)
-4. Make sure that you account is configured to access the files appropriately:
+3. Got back to your SSH session. Make sure that you account is configured to access the files appropriately:
 ```bash
 sudo usermod -a -G video,gpio pi
 sudo usermod -a -G i2c,spi pi
 ```
 ### Step 3: Enable and start the service
+Enter the following commands while still in your ssh window.
 ```bash
 sudo systemctl daemon-reload
 sudo systemctl enable timelapse.service
