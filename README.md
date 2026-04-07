@@ -1,25 +1,9 @@
----
-title: "Raspberry Pi Camera Loop Setup"
-output:
-  html_document: default
-  pdf_document: default
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## Stuff to install first
 # Raspberry Pi NoIR Camera Timelapse Setup Instructions
 
 This document provides step-by-step instructions for setting up a Python script that automatically takes photos using a Raspberry Pi NoIR camera every 15 minutes and starts on boot.
 
-## Getting your login setup
-* Create a user called "pi".
-* Using the GUI (windows) interface, setup your wifi login.
-* Open a terminal and type ```sudo raspi-config```.
-* When you open this menu, select "1. System Options". Then select "B5 Boot / Auto Login". Then Select "B2 Console Autologin".
-* Exit from raspi-config and reboot your system.
+## Connecting your device
+Plug in your device and it will automatically connect to the **eiot**
 
 ## Python Script (timelapse.py)
 
