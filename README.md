@@ -14,11 +14,11 @@ This document provides step-by-step instructions for setting up a Python script 
 2. Open a new Windows Powershell or other terminal window.
 3. Make sure you are navigated to the directory on your computer with timelapse.py. Then type the following (again remember to replace XX with your device id):
    ```bash
-   sudo scp timelapse.py student@iotcamXX:/home/pi/
+   sudo scp timelapse.py student@iotcamXX:/home/student/
    ```
 5. Go to your ssh window and enter the following:
    ```bash
-   sudo chmod +x /home/pi/timelapse.py
+   sudo chmod +x /home/student/timelapse.py
    ```
 
 ### Step 2: Create the systemd service
@@ -46,8 +46,8 @@ sudo systemctl status timelapse.service
 
 ## Additional Information
 
-- Photos will be saved to `/home/pi/timelapse/` with filenames like `timelapse_20250402_153000.jpg`
-- Logs will be saved to `/home/pi/timelapse.log`
+- Photos will be saved to `/home/student/timelapse/` with filenames like `timelapse_20250402_153000.jpg`
+- Logs will be saved to `/home/student/timelapse.log`
 - You can modify the `INTERVAL` variable in the script to change the time between photos
 - Make sure your Raspberry Pi NoIR camera is properly connected and enabled in `raspi-config`
 - The script uses `libcamera-still` which is standard for Raspberry Pi OS Bullseye and newer
@@ -71,7 +71,7 @@ sudo systemctl start timelapse.service
 
 To view the logs:
 ```bash
-tail -f /home/pi/timelapse.log
+tail -f /home/student/timelapse.log
 ```
 
 ## Troubleshooting
