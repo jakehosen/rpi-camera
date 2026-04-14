@@ -9,7 +9,7 @@ from pathlib import Path
 
 # Configuration
 INTERVAL = 15 * 60  # 15 minutes in seconds
-SAVE_DIRECTORY = "/home/pi/timelapse"
+SAVE_DIRECTORY = "/home/student/timelapse"
 IMAGE_PREFIX = "timelapse_"
 
 def setup():
