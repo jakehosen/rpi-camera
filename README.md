@@ -35,7 +35,7 @@ sudo usermod -a -G i2c,spi student
 Enter the following commands while still in your ssh window.
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable timelapse.service
+sudo systemctl enable ~/timelapse.service
 sudo systemctl start timelapse.service
 ```
 
