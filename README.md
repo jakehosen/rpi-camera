@@ -28,8 +28,8 @@ This document provides step-by-step instructions for setting up a Python script 
    ```
 3. Got back to your SSH session. Make sure that you account is configured to access the files appropriately:
 ```bash
-sudo usermod -a -G video,gpio pi
-sudo usermod -a -G i2c,spi pi
+sudo usermod -a -G video,gpio student
+sudo usermod -a -G i2c,spi student
 ```
 ### Step 3: Enable and start the service
 Enter the following commands while still in your ssh window.
@@ -95,5 +95,5 @@ If the service doesn't start:
    ```
 2. Check the logs:
    ```bash
-   tail -f /home/pi/timelapse.log
+   tail -f /home/student/timelapse.log
    ```
