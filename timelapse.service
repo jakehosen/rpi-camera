@@ -3,12 +3,12 @@ Description=Raspberry Pi NoIR Camera Timelapse
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 /home/pi/timelapse.py
-WorkingDirectory=/home/pi
-StandardOutput=append:/home/pi/timelapse.log
-StandardError=append:/home/pi/timelapse.log
+ExecStart=/usr/bin/python3 /home/student/timelapse.py
+WorkingDirectory=/home/student
+StandardOutput=append:/home/student/timelapse.log
+StandardError=append:/home/student/timelapse.log
 Restart=always
-User=pi
+User=student
 
 [Install]
 WantedBy=multi-user.target
