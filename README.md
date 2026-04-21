@@ -97,3 +97,11 @@ If the service doesn't start:
    ```bash
    tail -f /home/student/timelapse.log
    ```
+
+
+
+   ## Getting your data
+   At the end of the deployment, your photos will be stored in /home/student/timelapse. You can access your photos using scp to transfer the images over the network using the following command. Go to your homee directory and make a photo called rpi_photos. Then use this command to download the photos to rpi_photos:
+   ```
+   scp student@iotcamXX:/home/student/timelapse/* ~/rpi_photos
+   ```
